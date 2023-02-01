@@ -1,8 +1,8 @@
 const fs = require("fs");
 
-const bangkuP = JSON.parse(fs.readFileSync('bangku.json')).bangkuP;
-const bangkuL = JSON.parse(fs.readFileSync('bangku.json')).bangkuL;
-const arrSiswa = JSON.parse(fs.readFileSync('siswa.json')).siswa;
+const bangkuP = JSON.parse(fs.readFileSync('json/bangku.json')).bangkuP;
+const bangkuL = JSON.parse(fs.readFileSync('json/bangku.json')).bangkuL;
+const arrSiswa = JSON.parse(fs.readFileSync('json/siswa.json')).siswa;
 
 function chooseRandom(gender) {
     let chosen;
