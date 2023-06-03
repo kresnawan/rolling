@@ -1,28 +1,34 @@
-const express = require("express");
-const http = require("http");
-const cors = require("cors")
-const { Server } = require("socket.io");
+const {server, io, app} = require("./server");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const router = require("./router/router.js");
+const connection = require("./db/database.js");
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: '*'
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true
+}
+app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(router);
+
+connection.connect(err =>{
+    if (err) {
+        return console.log(err);
     }
-});
 
-app.use(cors({origin: "*"}))
-
-app.get('/', (req, res) =>{
-    res.send('API successfully called!');
-});
+    console.log("MySQL connected");
+})
 
 io.on('connection', (socket) =>{
     console.log('A user connected');
-    socket.on('disconnect', function() {
-        console.log('A user disconnected');
-    })
-})
+    socket.on('disconnect', () =>{
+        console.log('A user disconnected')
+    });
+});
 
 server.listen(8000, () =>{
     console.log("Server successfully runned");
