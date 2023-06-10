@@ -6,7 +6,7 @@ const router = require("./router/router.js");
 const connection = require("./db/database.js");
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000', 'http://192.168.1.2:3000'],
     credentials: true
 }
 app.use(cors(corsOptions));
@@ -21,7 +21,7 @@ connection.connect(err =>{
     }
 
     console.log("MySQL connected");
-})
+});
 
 io.on('connection', (socket) =>{
     console.log('A user connected');
@@ -30,6 +30,6 @@ io.on('connection', (socket) =>{
     });
 });
 
-server.listen(8000, () =>{
+server.listen(2300, () =>{
     console.log("Server successfully runned");
 });

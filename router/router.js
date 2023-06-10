@@ -46,15 +46,29 @@ router.post('/acc', (req, res) =>{
     // });
     
     connection.query(`SELECT * from rolling_acc`, (err, result, fields) =>{
-        if (result.length >=35) {
-            io.emit("startsRolling");
-        }
-
         connection.query(`INSERT INTO rolling_acc (id, name) VALUES ('', '${name}')`);
         io.emit("acc");
-        res.send("Successfully acced");
+        res.send("Success");
+
+        if (result.length >=35) {
+            io.emit("startsRolling");
+            connection.query(`TRUNCATE rolling_acc`);
+        }
     });
     
 });
+
+router.get('/insertsiswa', (req, res) =>{
+    for (var i = 0; i < arraySiswa.length; i++) {
+        connection.query(`INSERT INTO siswa (nama, nomorAbsen, gender) VALUES ('${arraySiswa[i].nama}', '${arraySiswa[i].nomorAbsen}', '${arraySiswa[i].gender}')`);
+    }
+    res.send("Success");
+});
+
+router.get('/siswa', (req, res) =>{
+    connection.query(`SELECT * from siswa`, (err, result, fields) =>{
+        res.json(result);
+    });
+})
 
 module.exports = router;
